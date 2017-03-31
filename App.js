@@ -46,24 +46,26 @@ export default class App extends Component {
           style={styles.inputForm}
           value={this.state.inputValue}
           onChangeText={this._handleTextChange}
-          placeholder="Inpu text"
+          placeholder="Input todo"
         />
         <Button
-          title="Press me"
+          title="Add"
           onPress={this._handleSendButtonPress}
         />
         <ListView
+          style={styles.listView}
           dataSource={this.state.dataSource}
           renderRow={(rowData, sectionID, rowID) => {
             const handleDelete = () => {
               return this._handleDeleteButtonPress(rowID);
             }
             return (
-              <View>
-                <Text>{rowID}: {rowData}</Text>
+              <View style={styles.todoItem}>
+                <Text style={styles.todoText}>{rowData}</Text>
                 <Button
                   title="Delete"
                   onPress={handleDelete}
+                  style={styles.deleteButton}
                 />
               </View>
               );
@@ -81,11 +83,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
+    backgroundColor: '#eee',
   },
   inputForm: {
-    width: 200,
-    height: 44,
+    backgroundColor: '#fff',
+    width: 320,
+    height: 40,
     padding: 8,
   },
+  listView: {
+    marginTop: 32,
+  },
+  todoItem: {
+    alignItems: 'center',
+    padding: 8,
+    width: 320,
+    borderBottomWidth: 1.5,
+    borderColor: '#e0e0e0',
+    backgroundColor: '#fff',
+    border: '1 solid #333',
+    flex: 1,
+    flexDirection: 'row',
+  },
+  todoText: {
+    flex: 1,
+  },
+  deleteButton: {
+
+  }
 });
