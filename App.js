@@ -11,14 +11,15 @@ export default class App extends Component {
       dataSource: ds.cloneWithRows([]),
     };
     this._handleTextChange = this._handleTextChange.bind(this);
+    this._handleDeleteButtonPress = this._handleDeleteButtonPress.bind(this);
   }
-  _handleTextChange = value => {
+  _handleTextChange = (value) => {
     const inputValue = value;
     this.setState(() => ({
       inputValue,
     }));
   }
-  _handleButtonPress = () => {
+  _handleSendButtonPress = () => {
     if (!this.state.inputValue) {
       return;
     }
@@ -28,6 +29,14 @@ export default class App extends Component {
       dataSource: this.state.dataSource.cloneWithRows(textArray),
       inputValue: '',
     }));
+  };
+  _handleDeleteButtonPress = (id) => {
+    this.setState((a) => {
+      const newItem = a.dataSource._dataBlob.s1.filter((item, i) => (parseInt(id) !== i));
+      return {
+        dataSource: this.state.dataSource.cloneWithRows(newItem),
+      }
+    });
   };
 
   render() {
@@ -41,11 +50,25 @@ export default class App extends Component {
         />
         <Button
           title="Press me"
-          onPress={this._handleButtonPress}
+          onPress={this._handleSendButtonPress}
         />
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Text>{rowData}</Text>}
+          renderRow={(rowData, sectionID, rowID) => {
+            const handleDelete = () => {
+              return this._handleDeleteButtonPress(rowID);
+            }
+            return (
+              <View>
+                <Text>{rowID}: {rowData}</Text>
+                <Button
+                  title="Delete"
+                  onPress={handleDelete}
+                />
+              </View>
+              );
+            }
+          }
         />
       </View>
     );
